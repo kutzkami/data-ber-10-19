@@ -1,0 +1,73 @@
+-- Chalenge 1
+
+SELECT *	
+FROM authors a
+LIMIT 10;
+
+SELECT *	
+FROM titleauthor ta
+LIMIT 10;
+
+SELECT *	
+FROM titles
+LIMIT 10;
+
+SELECT *	
+FROM sales
+LIMIT 10;
+
+-- STEP 1--
+SELECT 
+	a.au_id 	as 'AUTOR ID',
+	a.au_lname	as 'LAST NAME',
+	a.au_fname	as 'FIRST NAME',
+ 	ta.title_id as 'TITLE ID',
+	s.qty 		as 'ITEMS SOLD',
+	t.price 	as 'PRICE',
+	t.royalty 	as 'TITLE ROYALTY',
+	t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100	as 'SALES ROYALIY'
+FROM authors a
+	JOIN titleauthor ta
+	ON a.au_id = ta.au_id
+	JOIN sales s
+	ON ta.title_id = s.title_id
+	JOIN titles t
+	ON s.title_id = t.title_id
+ORDER BY 8 DESC
+LIMIT 10;
+	
+-- STEP 2
+
+SELECT 
+	a.au_id 	as 'AUTOR ID',
+	a.au_lname	as 'LAST NAME',
+	a.au_fname	as 'FIRST NAME',
+ 	ta.title_id as 'TITLE ID',
+	FLOOR(SUM(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100)) as 'sum SALES ROYALIY'
+FROM authors a
+	JOIN titleauthor ta
+	ON a.au_id = ta.au_id
+	JOIN sales s
+	ON ta.title_id = s.title_id
+	JOIN titles t
+	ON s.title_id = t.title_id
+GROUP BY 1,4
+LIMIT 10;
+
+-- STEP 3
+
+SELECT 
+	a.au_id 	as 'AUTOR ID',
+	a.au_lname	as 'LAST NAME',
+	a.au_fname	as 'FIRST NAME',
+ 	ta.title_id as 'TITLE ID',
+	FLOOR(SUM(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100)) as 'sum SALES ROYALIY'
+FROM authors a
+	JOIN titleauthor ta
+	ON a.au_id = ta.au_id
+	JOIN sales s
+	ON ta.title_id = s.title_id
+	JOIN titles t
+	ON s.title_id = t.title_id
+GROUP BY 1,4
+LIMIT 10;
